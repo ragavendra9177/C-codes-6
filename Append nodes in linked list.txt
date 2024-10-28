@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+void Append(struct node** aRef, struct node** bRef) {
+    struct node* current;
+    if (*aRef == NULL) {
+        *aRef = *bRef;
+    } else {
+        current = *aRef;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = *bRef;
+    }
+    *bRef = NULL;
+}
+
+void push(struct node** headRef, int newData) {
+    struct node* newNode = new node();
+    newNode->data = newData;
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
+
+void printList(struct node* node) {
+    while (node != NULL) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    struct node* a = NULL;
+    struct node* b = NULL;
+
+    push(&a, 3);
+    push(&a, 2);
+    push(&a, 1);
+
+    push(&b, 6);
+    push(&b, 5);
+    push(&b, 4);
+
+    cout << "List A before append: ";
+    printList(a);
+    cout << "List B before append: ";
+    printList(b);
+
+    Append(&a, &b);
+
+    cout << "List A after append: ";
+    printList(a);
+    cout << "List B after append (should be empty): ";
+    printList(b);
+
+    return 0;
+}

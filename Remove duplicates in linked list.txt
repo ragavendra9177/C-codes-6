@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int data;
+    struct node* next;
+};
+
+void RemoveDuplicates(struct node* head) {
+    struct node* current = head;
+    if (current == NULL) return;
+
+    while (current->next != NULL) {
+        if (current->data == current->next->data) {
+            struct node* nextNext = current->next->next;
+            free(current->next);
+            current->next = nextNext;
+        } else {
+            current = current->next;
+        }
+    }
+}
+
+void push(struct node** headRef, int newData) {
+    struct node* newNode = new node();
+    newNode->data = newData;
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
+
+void printList(struct node* node) {
+    while (node != NULL) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    struct node* head = NULL;
+
+    // Creating a sorted list with duplicates: 11 -> 11 -> 7 -> 5 -> 5 -> 3 -> 2 -> 2
+    push(&head, 11);
+    push(&head, 11);
+    push(&head, 7);
+    push(&head, 5);
+    push(&head, 5);
+    push(&head, 3);
+    push(&head, 2);
+    push(&head, 2);
+
+    cout << "Original list with duplicates: ";
+    printList(head);
+
+    RemoveDuplicates(head);
+
+    cout << "List after removing duplicates: ";
+    printList(head);
+
+    return 0;
+}
